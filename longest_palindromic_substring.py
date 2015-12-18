@@ -1,14 +1,15 @@
 __author__ = 'guang'
 
 class Solution(object):
-    def common(self, s1, s2):
-        if len(s1) == 0 or len(s2) == 0:
-            return ""
+    def common_length(self, left, right, s):
+        length = len(s)
+        result = 0
+        while left >= 0 and right < length and s[left] == s[right]:
+            result += 1
+            left -= 1
+            right += 1
 
-        if s1[0] == s2[0]:
-            return s1[0] + self.common(s1[1:], s2[1:])
-        else:
-            return ""
+        return result
 
     def palindrome(self, s, index):
         """
@@ -18,32 +19,29 @@ class Solution(object):
 
         >>> s = Solution()
         >>> text = "abcba"
-        >>> s.palindrome(text, 0)
-        'a'
         >>> s.palindrome(text, 1)
-        'b'
+        (1, 1)
         >>> s.palindrome(text, 2)
-        'abcba'
+        (0, 4)
         >>> text = "abba"
         >>> s.palindrome(text, 0)
-        'a'
+        (0, 0)
         >>> s.palindrome(text, 1)
-        'b'
+        (1, 1)
         >>> s.palindrome(text, 2)
-        'b'
+        (2, 2)
         >>> s.palindrome(text, 3)
-        'a'
+        (3, 3)
+        >>> s.palindrome("a", 0)
+        (0, 0)
         """
-        left = s[:index]
-        right = s[index+1:]
-        minLength = min(len(left), len(right))
-        left = left[len(left)-minLength:]
-        right = right[:minLength]
+        left = index - 1
+        right = index + 1
+        common = self.common_length(left, right, s)
 
-        common_part = self.common(left, right[::-1])
-        return common_part + s[index] + common_part[::-1]
+        return index - common, index + common
 
-    def palindrome2(self, s, lindex, rindex):
+    def palindrome2(self, s, left, right):
         """
 
         :param s:
@@ -53,52 +51,54 @@ class Solution(object):
         >>> s = Solution()
         >>> text = "abba"
         >>> s.palindrome2(text, 0, 1)
-        ''
+        (0, 0)
         >>> s.palindrome2(text, 1, 2)
-        'abba'
+        (0, 3)
         >>> s.palindrome2(text, 2, 3)
-        ''
+        (0, 0)
         """
-        if s[lindex] != s[rindex]:
-            return ''
+        if s[left] != s[right]:
+            return 0, 0
 
-        left = s[:lindex]
-        right = s[rindex+1:]
-        minLength = min(len(left), len(right))
-        left = left[len(left)-minLength:]
-        right = right[:minLength]
+        common = self.common_length(left - 1, right + 1, s)
 
-        common_part = self.common(left, right[::-1])
-        return common_part + s[lindex] + s[rindex] + common_part[::-1]
+        return left - common, right + common
 
     def longestPalindrome(self, s):
         """
         :type s: str
         :rtype: str
         >>> s = Solution()
+        >>> s.longestPalindrome("a")
+        'a'
         >>> s.longestPalindrome("abccba")
         'abccba'
         >>> s.longestPalindrome("abbc")
         'bb'
+        >>> text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        >>> s.longestPalindrome(text)
+        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
         """
 
-        if len(s) <= 1:
-            return ''
-
-        max_length = 0
-        result = ""
-        for index in range(1, len(s)-1):
+        max_length = -1
+        upper_limit = 1000
+        result = (0, 0)
+        for index in range(len(s)-1):
             palindrome1 = self.palindrome(s, index)
             palindrome2 = self.palindrome2(s, index, index+1)
-            length1 = len(palindrome1)
-            length2 = len(palindrome2)
+            length1 = palindrome1[1] - palindrome1[0]
+            length2 = palindrome2[1] - palindrome2[0]
 
             if length1 > max_length:
                 max_length = length1
                 result = palindrome1
+                if max_length >= upper_limit:
+                    break
 
             if length2 > max_length:
                 max_length = length2
                 result = palindrome2
+                if max_length >= upper_limit:
+                    break
 
-        return result
+        return s[result[0]:result[1]+1]
