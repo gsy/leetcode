@@ -7,6 +7,13 @@ class Solution(object):
     def leftLength(self, s, x):
         return len([y for y in s if y <= x])
 
+    def middle(self, s):
+        length = len(s)
+        if self.even(length):
+            return s[length/2-1]
+        else:
+            return s[length/2]
+
     def leftWithBorder(self, s):
         """
         left side of s, include middle element
@@ -133,31 +140,39 @@ class Solution(object):
         6
         >>> s.kth([], [1, 1], 2)
         1
-        >>> s.kth([1], [1,1,1], 2)
+        >>> s.kth([1], [1,1,1,1], 2)
         1
+        >>> s.kth([1,3,7,8], [2,5], 3)
+        3
+        >>> s.kth([1,3,7,8], [2,5], 4)
+        5
+        >>> s.kth([2,5,8,13,14], [1,5,7], 4)
+        5
         """
         if s1 and s2:
             if k == 1:
                 return min(s1[0], s2[0])
 
-            length1 = len(s1)
-            length2 = len(s2)
             half_length = (len(s1) + len(s2)) / 2
+            x = self.middle(s1)
+            y = self.middle(s2)
             if k < half_length:
-                if s1[length1-1] >= s2[length2-1]:
+                if x >= y:
                     return self.kth(self.left(s1), s2, k)
                 else:
                     return self.kth(s1, self.left(s2), k)
             elif k == half_length:
-                if s1[length1-1] >= s2[length2-1]:
-                    return self.kth(self.leftWithBorder(s1), s2, k)
+                if x > y:
+                    return self.kth(self.left(s1), s2, k)
+                elif x == y:
+                    return x
                 else:
-                    return self.kth(s1, self.leftWithBorder(s2), k)
+                    return self.kth(s1, self.left(s2), k)
             else:
-                if s1[0] <= s2[0]:
-                    return self.kth(self.right(s1), s2, k-self.leftLength(self.leftWithBorder(s1), s2[len(s2) - 1]))
+                if x <= y:
+                    return self.kth(self.right(s1), s2, k-len(self.leftWithBorder(s1)))
                 else:
-                    return self.kth(s1, self.right(s2), k-self.leftLength(self.leftWithBorder(s2), s1[len(s1) - 1]))
+                    return self.kth(s1, self.right(s2), k-len(self.leftWithBorder(s2)))
 
         elif s1:
             return s1[k-1]
@@ -197,7 +212,7 @@ class Solution(object):
         >>> s.findMedianSortedArrays([1], [2,3,4])
         2.5
         >>> s.findMedianSortedArrays([1,1,1], [1,1,1])
-        1
+        1.0
         """
         total = len(nums1) + len(nums2)
         if self.even(total):
