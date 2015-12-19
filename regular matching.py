@@ -24,6 +24,8 @@ class Solution(object):
         ['dd*']
         >>> s.candidates('.*c')
         ['..*c', 'c']
+        >>> s.candidates("a*a*a*a*a*a*a*a*a*a*c")
+        ['aa*a*a*a*a*a*a*a*a*a*c', 'aa*a*a*a*a*a*a*a*a*c', 'aa*a*a*a*a*a*a*a*c', 'aa*a*a*a*a*a*a*c', 'aa*a*a*a*a*a*c', 'aa*a*a*a*a*c', 'aa*a*a*a*c', 'aa*a*a*c', 'aa*a*c', 'aa*c', 'c']
         """
         if len(p) > 1 and p[1] == '*':
             extended = [p[0]]
@@ -65,6 +67,29 @@ class Solution(object):
 
         return result
 
+    def optimize(self, p):
+        """
+
+        :param p:
+        :return:
+        >>> s = Solution()
+        >>> s.optimize("a*a*a*c")
+        'a*c'
+        >>> s.optimize("b*c")
+        'b*c'
+        >>> s.optimize(".*ab.a.*a*a*.*b*b*")
+        '.*ab.a.*a*.*b*'
+        """
+        stack = []
+        for x in p:
+            stack.append(x)
+            if x == '*' and len(stack) >= 4:
+                token1 = ''.join(stack[-2:])
+                token2 = ''.join(stack[-4:-2])
+                if token1 == token2:
+                    stack = stack[:-2]
+        return ''.join(stack)
+
     def isMatch(self, s, p):
         """
         :type s: str
@@ -89,6 +114,12 @@ class Solution(object):
         False
         >>> s.isMatch("aaa", "a*a")
         True
+        >>> s.isMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*a*a*c")
+        False
+        >>> s.isMatch("cba", 'c*.a')
+        True
+        >>> s.isMatch("abcaaaaaaabaabcabac", ".*ab.a.*a*a*.*b*b*")
+        True
         """
         if len(s) == 0:
             if len(self.reduce(p)) == 0:
@@ -100,6 +131,7 @@ class Solution(object):
             return False
 
         result = False
+        p = self.optimize(p)
         for candidate in self.candidates(p):
             if s[0] == candidate[0] or candidate[0] == '.':
                 if self.isMatch(s[1:], candidate[1:]):
