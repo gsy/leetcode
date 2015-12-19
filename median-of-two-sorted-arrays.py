@@ -1,158 +1,170 @@
 __author__ = 'guang'
 
 class Solution(object):
-    @staticmethod
-    def even(x):
+    def even(self, x):
         return x % 2 == 0
 
-    @staticmethod
-    def median(s):
-        """
-        >>> Solution.median([1,3,7,8])
-        5.0
-        >>> Solution.median([3,5])
-        4.0
-        >>> Solution.median([2,5])
-        3.5
-        >>> Solution.median([1,2,5,8,9])
-        5.0
-        >>> Solution.median([3,4])
-        3.5
-        """
-        if len(s) == 0:
-            return 0
+    def leftLength(self, s, x):
+        return len([y for y in s if y <= x])
 
-        length = len(s)
-        if Solution.even(length):
-            return (s[length / 2 - 1] + s[length / 2]) / 2.0
-        else:
-            return s[length / 2] * 1.0
-
-    @staticmethod
-    def index(s, x):
+    def leftWithBorder(self, s):
         """
-        index of y, which in s and y <= x, start from 1
+        left side of s, include middle element
         :param s:
-        :param x:
         :return:
-        >>> s = [1,3,7,8]
-        >>> Solution.index(s, 5)
-        2
-        >>> Solution.index([2, 5], 3.5)
-        1
-        >>> Solution.index([3,4], 3.5)
-        1
-        >>> Solution.index([1,5,7], 5)
-        2
-        >>> Solution.index([1,1], 1.0)
-        1
-        """
-        result = len([y for y in s if y <= x])
-        if result == len(s):
-            return result - 1
-        return result
-
-    @staticmethod
-    def left(s, x):
-        """
-        Element y in s and y < x
-        :param s:
-        :param x:
-        :return:
-        >>> Solution.left([1, 3, 7, 8], 5)
+        >>> s = Solution()
+        >>> s.leftWithBorder([1,3,7,8])
         [1, 3]
-        >>> Solution.left([2, 5], 3.5)
-        [2]
-        >>> Solution.left([1,2,5,8,9], 5.0)
-        [1, 2]
-        >>> Solution.left([2,5,8,13,14], 8.0)
-        [2, 5]
+        >>> s.leftWithBorder([1,2,3,4,5])
+        [1, 2, 3]
+        >>> s.leftWithBorder([1])
+        [1]
+        >>> s.leftWithBorder([])
+        []
         """
-        result = [y for y in s if y < x]
-        if result:
-            return result
+        length = len(s)
+        if self.even(length):
+            return s[:length/2]
         else:
-            return [x]
+            return s[:(length/2+1)]
 
-    @staticmethod
-    def right(s):
+
+    def left(self, s):
         """
-        >>> Solution.right([2, 5], 3.5)
+        left side of s, exclude border
+        :param s:
+        :return:
+        >>> s = Solution()
+        >>> s.left([1, 3, 7, 8])
+        [1, 3]
+        >>> s.left([2, 5])
+        [2]
+        >>> s.left([1,2,5,8,9])
+        [1, 2]
+        >>> s.left([2,5,8,13,14])
+        [2, 5]
+        >>> s.left([1,1])
+        [1]
+        >>> s.left([5])
+        []
+        """
+        return s[:len(s) / 2]
+
+    def right(self, s):
+        """
+        >>> s = Solution()
+        >>> s.right([2, 5])
         [5]
-        >>> Solution.right([1, 2, 5, 8, 9], 5)
+        >>> s.right([1, 2, 5, 8, 9])
         [8, 9]
-        >>> Solution.right([3,4], 3.5)
+        >>> s.right([3, 4])
         [4]
+        >>> s.right([1, 1])
+        [1]
+        >>> s.right([1])
+        []
+        >>> s.right([1,3])
+        [3]
         """
+        length = len(s)
+        if self.even(length):
+            return s[length/2:]
+        else:
+            return s[(length/2+1):]
 
-
-
-    @staticmethod
-    def kth(s1, s2, k):
+    def median(self, s):
         """
-        The Kth minimum value in s1 and s2
+        >>> s = Solution()
+        >>> s.median([5])
+        5
+        """
+        length = len(s)
+        if self.even(length):
+            return (s[length/2 - 1] + s[length/2]) / 2.0
+        else:
+            return s[length/2]
+
+    def less_than_middle(self, s):
+        length = len(s)
+        if self.even(length):
+            return length / 2
+        else:
+            return length / 2 + 1
+
+    def kth(self, s1, s2, k):
+        """
+        The Kth minimum value in s1 and s2, binary search
         :param s1:
         :param s2:
         :param k:
         :return:
-        >>> Solution.kth([1, 3], [5], 2)
+        >>> s = Solution()
+        >>> s.kth([], [], 3)
+        0
+        >>> s.kth([], [1,2,3], 3)
         3
-        >>> Solution.kth([1, 3], [5], 3)
-        5
-        >>> Solution.kth([], [], 3)
-
-        >>> Solution.kth([], [1,2,3], 3)
-        3
-        >>> Solution.kth([1,2,3], [], 2)
+        >>> s.kth([1,2,3], [], 2)
         2
-        >>> Solution.kth([1,2,5,8,9], [3,4], 3)
+        >>> s.kth([1, 3], [5], 2)
         3
+        >>> s.kth([1, 3], [5], 3)
+        5
+        >>> s.kth([1], [1], 1)
+        1
+        >>> s.kth([1], [1], 2)
+        1
+        >>> s.kth([1], [2], 2)
+        2
+        >>> s.kth([1,1], [1,2], 1)
+        1
+        >>> s.kth([1,1], [1,2], 2)
+        1
+        >>> s.kth([1,1], [1,2], 3)
+        1
+        >>> s.kth([1,1], [1,2], 4)
+        2
+        >>> s.kth([1], [2,3,4], 2)
+        2
+        >>> s.kth([1], [2,3,4], 3)
+        3
+        >>> s.kth([1,2,3,4], [5,6,7,8,9,10], 5)
+        5
+        >>> s.kth([1,2,3,4], [5,6,7,8,9,10], 6)
+        6
+        >>> s.kth([], [1, 1], 2)
+        1
+        >>> s.kth([1], [1,1,1], 2)
+        1
         """
         if s1 and s2:
             if k == 1:
                 return min(s1[0], s2[0])
-            else:
-                if s1[0] < s2[0]:
-                    return Solution.kth(s1[1:], s2, k - 1)
+
+            length1 = len(s1)
+            length2 = len(s2)
+            half_length = (len(s1) + len(s2)) / 2
+            if k < half_length:
+                if s1[length1-1] >= s2[length2-1]:
+                    return self.kth(self.left(s1), s2, k)
                 else:
-                    return Solution.kth(s1, s2[1:], k - 1)
+                    return self.kth(s1, self.left(s2), k)
+            elif k == half_length:
+                if s1[length1-1] >= s2[length2-1]:
+                    return self.kth(self.leftWithBorder(s1), s2, k)
+                else:
+                    return self.kth(s1, self.leftWithBorder(s2), k)
+            else:
+                if s1[0] <= s2[0]:
+                    return self.kth(self.right(s1), s2, k-self.leftLength(self.leftWithBorder(s1), s2[len(s2) - 1]))
+                else:
+                    return self.kth(s1, self.right(s2), k-self.leftLength(self.leftWithBorder(s2), s1[len(s1) - 1]))
 
         elif s1:
-            if k == 1:
-                return s1[0]
-            else:
-                return Solution.kth(s1[1:], s2, k - 1)
-
+            return s1[k-1]
         elif s2:
-            if k == 1:
-                return s2[0]
-            else:
-                return Solution.kth(s1, s2[1:], k - 1)
-
+            return s2[k-1]
         else:
-            return None
-
-    @staticmethod
-    def k(s1, s2, deleted):
-        """
-        :param s1:
-        :param s2:
-        :param deleted:
-        :return:
-        >>> Solution.k([1, 3, 7, 8], [2, 5], 1)
-        (2, 3)
-        >>> Solution.k([1,2,5,8,9], [3,4], 1)
-        (3, 3)
-        >>> Solution.k([1,2,5,8,9], [3,4], 1)
-        (3, 3)
-        >>> Solution.k([1,1], [1,2], 1)
-        (1, 2)
-        """
-        total = len(s1) + len(s2)
-        if Solution.even(total):
-            return total / 2 - deleted, total / 2 + 1 - deleted
-        else:
-            return total / 2 + 1 - deleted,  total / 2 + 1 - deleted
+            return 0
 
     def findMedianSortedArrays(self, nums1, nums2):
         """
@@ -167,46 +179,31 @@ class Solution(object):
         >>> nums1 = [1,2,5,8,9]
         >>> nums2 = [3,4]
         >>> s.findMedianSortedArrays(nums1, nums2)
-        4.0
+        4
         >>> nums1 = [2,5,8,13,14]
         >>> nums2 = [1,5,7]
         >>> s.findMedianSortedArrays(nums1, nums2)
         6.0
         >>> s.findMedianSortedArrays([], [1])
-        1.0
+        1
         >>> s.findMedianSortedArrays([], [])
-        0
+        0.0
         >>> s.findMedianSortedArrays([1,1], [1,1])
         1.0
         >>> s.findMedianSortedArrays([1,1], [2,3])
         1.5
         >>> s.findMedianSortedArrays([1,1,1,1], [1,2])
         1.0
+        >>> s.findMedianSortedArrays([1], [2,3,4])
+        2.5
+        >>> s.findMedianSortedArrays([1,1,1], [1,1,1])
+        1
         """
-
-        if not nums1 and not nums2:
-            return 0
-
-        if not nums1:
-            return Solution.median(nums2)
-
-        if not nums2:
-            return Solution.median(nums1)
-
-        x = Solution.median(nums1)
-        y = Solution.median(nums2)
-
-        if x == y:
-            return x
-
-        if x < y:
-            deleted = Solution.index(nums1, x)
-            half_nums1 = Solution.right(nums1)
-            half_nums2 = Solution.left(nums2)
+        total = len(nums1) + len(nums2)
+        if self.even(total):
+            k1 = total / 2
+            k2 = total / 2 + 1
+            return (self.kth(nums1, nums2, k1) + self.kth(nums1, nums2, k2)) / 2.0
         else:
-            deleted = Solution.index(nums2, y)
-            half_nums1 = Solution.left(nums1, x)
-            half_nums2 = Solution.right(nums2, y)
-
-        k1, k2 = self.k(nums1, nums2, deleted)
-        return Solution.median([Solution.kth(half_nums1, half_nums2, k1), Solution.kth(half_nums1, half_nums2, k2)])
+            k = total / 2 + 1
+            return self.kth(nums1, nums2, k)
