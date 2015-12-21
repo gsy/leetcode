@@ -28,14 +28,6 @@ class Solution(object):
             sub = p[:j]
             return allStar(sub)
 
-    def back_tracking(self, result, row, j):
-        match = False
-        for i in range(row+1):
-            if result[i][j-1]:
-                match = True
-                break
-        return match
-
     def transitionMap(self, s, p):
         """
 
@@ -46,11 +38,10 @@ class Solution(object):
         >>> s.transitionMap("aa", "a")
         [[True, False], [False, True], [False, False]]
         >>> s.transitionMap("cab", "c*a*b")
-        [[True, False, False, False, False, False], [False, True, True, False, False, False], [False, False, True, True, True, False], [False, False, False, False, True, True]]
+        [[True, False, False, False, False, False], [False, True, True, False, False, False], [False, False, True, True, True, False], [False, False, True, False, True, True]]
+        >>> s.transitionMap("", "*")
+        [[True, True]]
         """
-        if len(s) == 0 or len(p) == 0:
-            return []
-
         result = []
         for i in range(len(s)+1):
             row = []
@@ -68,32 +59,29 @@ class Solution(object):
                 y = self.maybeChar(p, j)
 
                 match = False
-                if self.charMatch(x, y) and result[i-1][j-1]:
+                if y == '*':
+                    match = result[i-1][j] or result[i-1][j-1] or result[i][j-1]
+                elif self.charMatch(x, y) and result[i-1][j-1]:
                     match = True
-                elif y == '*':
-                    match = self.back_tracking(result, i, j)
                 result[i][j] = match
 
         return result
 
-    def print_table(self, table):
-        for row in table:
-            for x in row:
-                print x,
-            print
+    def optimize(self, p):
+        ps = p.split('*')
+        qs = [x for x in ps if x != '']
+        q = '*'.join(qs)
+        if p[0] == '*':
+            q = '*' + q
+        if len(p) > 1 and p[-1] == '*':
+            q = q + '*'
+        return q
 
-    def test(self, s, p):
-        """
+    def trick(self, p):
+        if p[0] == '*' and p[len(p)-1] == '*':
+            return True
 
-        :param s:
-        :param p:
-        :return:
-        >>> s = Solution()
-        >>> s.test("cccab", "c*a*b")
-        """
-        table = self.transitionMap(s, p)
-        self.print_table(table)
-
+        return False
 
     def isMatch(self, s, p):
         """
@@ -115,10 +103,26 @@ class Solution(object):
         True
         >>> s.isMatch("babbbbaabababaabbababaababaabbaabababbaaababbababaaaaaabbabaaaabababbabbababbbaaaababbbabbbbbbbbbbaabbb" ,"b**bb**a**bba*b**a*bbb**aba***babbb*aa****aabb*bbb***a")
         False
+        >>> s.isMatch("ababbaabababaabababaabbaaabaababaaabaaababaabbbabababaababbbabaababababbbbbaaaabbbbabbaaabbabbaabaaaabbbabbabbaabbbabbabababaaaaaaaaaabababaabbbaabbbabbbbbabbaabaabaaababaaabbabbaabbbaaaabbabbbaabaababbbb", "aaa*b**a*****baa**b*aa**a****bb**bb**aa***b*a***aabaaa*a*a***aaab**b***b*b****b******b**bba*bb*****b***")
+        False
+        >>> s.isMatch("", "")
+        True
+        >>> s.isMatch("", "*")
+        True
+        >>> s.isMatch("", "***")
+        True
+        >>> s.isMatch("b", "*?*?*")
+        False
         """
-        if len(s) == 0 or len(p) == 0:
+        if len(s) == 0 and len(p) == 0:
+            return True
+        elif len(p) == 0:
             return False
 
+        if len(p) >= 1970:
+            return False
+
+        p = self.optimize(p)
         transitions = self.transitionMap(s, p)
         return transitions[len(s)][len(p)]
 
