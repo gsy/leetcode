@@ -1,84 +1,99 @@
 __author__ = 'guang'
 
 class Solution(object):
-    def transitions(self, p):
+    def charMatch(self, si, pj):
+        if pj in ['*', '?']:
+            return True
+        else:
+            return si == pj
+
+    def maybeChar(self, lst, position):
+        if not lst or position > len(lst) or position < 1:
+            return ''
+
+        return lst[position - 1]
+
+    def zeroMatch(self, j, p):
+        def allStar(sub):
+            result = True
+            for y in sub:
+                if y != '*':
+                    result = False
+                    break
+            return result
+
+        if j == 0:
+            return True
+        else:
+            sub = p[:j]
+            return allStar(sub)
+
+    def back_tracking(self, result, row, j):
+        match = False
+        for i in range(row+1):
+            if result[i][j-1]:
+                match = True
+                break
+        return match
+
+    def transitionMap(self, s, p):
         """
+
+        :param s:
         :param p:
         :return:
         >>> s = Solution()
-        >>> s.transitions("aa")
-        [{'a': 1}, {'a': 2}]
-        >>> s.transitions("a")
-        [{'a': 1}]
-        >>> s.transitions("?a")
-        [{'?': 1}, {'a': 2}]
-        >>> s.transitions("*")
-        [{'?': 0}]
-        >>> s.transitions("a*")
-        [{'a': 1}, {'?': 1}]
-        >>> s.transitions("c*a*b")
-        [{'c': 1}, {'a': 2, '?': 1}, {'b': 3, '?': 2}]
+        >>> s.transitionMap("aa", "a")
+        [[True, False], [False, True], [False, False]]
+        >>> s.transitionMap("cab", "c*a*b")
+        [[True, False, False, False, False, False], [False, True, True, False, False, False], [False, False, True, True, True, False], [False, False, False, False, True, True]]
         """
-        result = []
-        state = 0
-        length = len(p)
-        for index, x in enumerate(p):
-            mapping = {}
-            state += 1
-            if x == '*':
-                mapping['?'] = state - 1
-                if index < length - 1:
-                    mapping[p[index+1]] = state
-            else:
-                if index > 0 and p[index - 1] == '*':
-                    state -= 1
-                    continue
-                else:
-                    mapping[x] = state
-            result.append(mapping)
-
-        return result
-
-    def accepting_state(self, transitions):
-        mapping = transitions[-1]
-        return mapping.values()
-
-    def judge(self, state, s, transitions):
-        if len(s) == 0:
-            return state in self.accepting_state(transitions)
-        elif state >= len(transitions):
-            return False
-
-        mapping = transitions[state]
-        possibles = mapping.keys()
-        x = s[0]
-
-        if x in possibles:
-            next_state = mapping[x]
-            if self.judge(next_state, s[1:], transitions):
-                return True
-        if '?' in possibles:
-            next_state = mapping['?']
-            if self.judge(next_state, s[1:], transitions):
-                return True
-            elif next_state != state:
-                return self.judge(next_state, s, transitions)
-
-        return False
-
-    def optimize(self, p):
-        if len(p) == 0:
+        if len(s) == 0 or len(p) == 0:
             return []
 
-        ps = p.split('*')
-        qs = [x for x in ps if x != '']
-        q = '*'.join(qs)
-        result = q
-        if p[0] == '*':
-            result = "*" + result
-        if len(p) > 1 and p[-1] == '*':
-            result = result + "*"
+        result = []
+        for i in range(len(s)+1):
+            row = []
+            for j in range(len(p)+1):
+                if i == 0:
+                    row.append(self.zeroMatch(j, p))
+                else:
+                    row.append(False)
+
+            result.append(row)
+
+        for i in range(1, len(s)+1):
+            for j in range(1, len(p) + 1):
+                x = self.maybeChar(s, i)
+                y = self.maybeChar(p, j)
+
+                match = False
+                if self.charMatch(x, y) and result[i-1][j-1]:
+                    match = True
+                elif y == '*':
+                    match = self.back_tracking(result, i, j)
+                result[i][j] = match
+
         return result
+
+    def print_table(self, table):
+        for row in table:
+            for x in row:
+                print x,
+            print
+
+    def test(self, s, p):
+        """
+
+        :param s:
+        :param p:
+        :return:
+        >>> s = Solution()
+        >>> s.test("cccab", "c*a*b")
+        """
+        table = self.transitionMap(s, p)
+        self.print_table(table)
+
 
     def isMatch(self, s, p):
         """
@@ -101,11 +116,12 @@ class Solution(object):
         >>> s.isMatch("babbbbaabababaabbababaababaabbaabababbaaababbababaaaaaabbabaaaabababbabbababbbaaaababbbabbbbbbbbbbaabbb" ,"b**bb**a**bba*b**a*bbb**aba***babbb*aa****aabb*bbb***a")
         False
         """
-        if len(s) == 0:
+        if len(s) == 0 or len(p) == 0:
             return False
 
-        p = self.optimize(p)
-        return self.judge(0, s, self.transitions(p))
+        transitions = self.transitionMap(s, p)
+        return transitions[len(s)][len(p)]
+
 
 
 
