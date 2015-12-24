@@ -1,87 +1,85 @@
 __author__ = 'guang'
 
-import string
-
 class Solution(object):
-    def minPostion(self, pairs):
-        """
+    def consecutive(self, pairs, length):
+        if len(pairs) < 2:
+            return False
 
-        :param pairs:
-        :return:
+
+
+
+    def isConcatOnlyOnce(self, pairs, occurance_word_map, word_count):
+        for occurance in pairs:
+            word = occurance_word_map[occurance]
+
+
+
+
+    def concat(self, occurances, occurance_word_map, word_count, length):
+        """
         >>> s = Solution()
-        >>> s.minPostion([])
-        0
-        >>> s.minPostion([6, 3, 9])
-        1
-        """
-        if len(pairs) == 0:
-            return 0
-
-        min = pairs[0]
-        result = 0
-        for i in range(1, len(pairs)):
-            if pairs[i] < min:
-                min = pairs[i]
-                result = i
-
-        return result
-
-    def isConcat(self, pairs, length):
-        """
-
-        :param pairs:
-        :param length:
-        :return:
-        >>> s = Solution()
-        >>> s.isConcat([0, 3, 6], 3)
-        True
-        >>> s.isConcat([3, 6, 12], 3)
-        False
-        >>> s.isConcat([3, 5, 9], 2)
-        False
-        """
-        pairs = sorted(pairs)
-        total = len(pairs)
-        for i in range(total - 1):
-            if pairs[i+1] - pairs[i] != length:
-                return False
-
-        return True
-
-    def concat(self, positions, length):
-        """
-
-        :param positions:
-        :param length:
-        :return:
-        >>> s = Solution()
-        >>> s.concat([[0, 9, 18], [3, 6, 15], [12]], 3)
+        >>> s.concat([[0, 9, 18], [3, 6, 15], [12]])
         [6, 9, 12]
         """
-        if len(positions) <= 1:
+        total = 0
+        for count in word_count.values():
+            total += count
+
+        if total > len(occurances):
             return []
 
+        occurances = sorted(occurances)
+
+        i = 0
         result = []
-        lengths = map(len, positions)
-        indexs = [0] * len(positions)
+        while i < len(occurances):
+            pairs = occurances[i:i+total]
+            if self.consecutive(pairs, length):
 
-        while True:
-            pairs = []
-            for i in range(len(positions)):
-                pairs.append(positions[i][indexs[i]])
-            min_position = self.minPostion(pairs)
-            if self.isConcat(pairs, length):
-                result.append(pairs[min_position])
 
-            if indexs[min_position] + 1 >= lengths[min_position]:
-                break
             else:
-                indexs[min_position] += 1
+                i += total
 
         return result
 
-    def optimize(self, words):
+    def reduce(self, words):
         return set(words)
+
+    def word_count(self, words):
+        """
+
+        :param words:
+        :return:
+        >>> s = Solution()
+        >>> s.word_count(["foo", "bar", "foo", "good"])
+        {'foo': 2, 'bar': 1, 'good': 1}
+        """
+        result = {}
+        for word in words:
+            if word in result:
+                count = result[word]
+                result[word] = count + 1
+            else:
+                result[word] = 1
+
+        return result
+
+    def word_occurance(self, s, word, length):
+        """
+        >>> s = Solution()
+        >>> s.word_occurance("foobarthebarfoohoo", "foo", 3)
+        [0, 12]
+        >>> s.word_occurance("foobarthebarfoohoo", "bar", 3)
+        [3, 9]
+        """
+        occurance = []
+        position = s.find(word)
+        while position != -1:
+            occurance.append(position)
+            start = position + length
+            position = s.find(word, start)
+        return occurance
+
 
     def findSubstring(self, s, words):
         """
@@ -89,32 +87,23 @@ class Solution(object):
         :type words: List[str]
         :rtype: List[int]
         >>> s = Solution()
-        >>> s.findSubstring("barfoothefoobarman", ["bar", "foo"])
-        [0, 9]
-        >>> s.findSubstring("", ["abc", "bar"])
+        >>> s.findSubstring("abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab" ,["ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba","ab","ba"])
         []
-        >>> s.findSubstring("foofoo", ["foo", "foo"])
-        [0]
-        >>> s.findSubstring("barfoofoobarthefoobarman", ["bar","foo","the"])
-        [6, 9, 12]
-        >>> s.findSubstring("wordgoodgoodgoodbestword", ["word","good","best","good"])
-        [8]
-        >>> s.findSubstring("aabc", ["a", "a", "b"])
-        [0]
         """
+
         if len(words) == 0:
             return []
 
         length = len(words[0])
-        positions = []
+        word_count = self.word_count(words)
+        words = self.reduce(words)
+        occurance_word_map = {}
+        occurances = []
         for word in words:
-            match = []
-            found = s.find(word)
-            while found != -1:
-                match.append(found)
-                start = found + length
-                found = s.find(word, start)
-            if match:
-                positions.append(match)
+            occurance = self.word_occurance(s, word, length)
+            occurances.extend(occurance)
+            for x in occurance:
+                occurance_word_map[x] = word
 
-        return self.concat(positions, length)
+
+        return self.concat(occurances, occurance_word_map, word_count, length)
