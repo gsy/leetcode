@@ -50,49 +50,34 @@ class Solution(object):
         >>> s = Solution()
         >>> head = LinkedList.fromList([1, 2, 3, 4, 5, 6])
         >>> result = s.reverse(head, 2)
+        >>> head, tail, beyond_tail = result
+        >>> head.val
+        2
+        >>> tail.val
+        1
+        >>> beyond_tail.val
+        3
+        >>> head = LinkedList.fromList([1])
+        >>> result = s.reverse(head, 2)[0]
         >>> LinkedList.toList(result)
-        [2, 1, 3, 4, 5, 6]
+        [1]
         """
         if node is None:
-            return None, None
+            return None, None, None
         if k == 1:
+            head = node
             tail = node
             beyond_tail = node.next
-            return tail, beyond_tail
+            return head, tail, beyond_tail
         else:
-            tail, beyond_tail = self.reverse(node.next, k - 1)
+            head, tail, beyond_tail = self.reverse(node.next, k - 1)
             # touch the end, reverse
             if tail:
                 tail.next = node
+                return head, node, beyond_tail
             # k > len(node), do nothing
             else:
-                pass
-
-
-
-    def kth(self, head, k):
-        """
-        >>> s = Solution()
-        >>> head = LinkedList.fromList([1, 2, 3])
-        >>> one = s.kth(head, 1)
-        >>> one.val
-        1
-        >>> two = s.kth(head, 2)
-        >>> two.val
-        2
-        >>> s.kth(head, 5)
-
-        >>> three = s.kth(head, 3)
-        >>> three.val
-        3
-        """
-        while True:
-            if head is None:
-                return None
-            if k == 1:
-                return head
-            head = head.next
-            k -= 1
+                return node, None, None
 
     def reverseKGroup(self, head, k):
         """
@@ -100,20 +85,42 @@ class Solution(object):
         :type k: int
         :rtype: ListNode
         >>> s = Solution()
-        >>> head = LinkedList.fromList([1, 2, 3, 4, 5, 6])
-        >>> result = s.reverseKGroup(head, 3)
-        >>> LinkedList.toList(result)
-        [3, 2, 1, 4, 5, 6]
         >>> head = LinkedList.fromList([1])
         >>> result = s.reverseKGroup(head, 2)
         >>> LinkedList.toList(result)
         [1]
+        >>> head = LinkedList.fromList([1, 2, 3, 4, 5, 6])
+        >>> result = s.reverseKGroup(head, 2)
+        >>> LinkedList.toList(result)
+        [2, 1, 4, 3, 6, 5]
+        >>> head = LinkedList.fromList([1, 2, 3, 4, 5])
+        >>> result = s.reverseKGroup(head, 2)
+        >>> LinkedList.toList(result)
+        [2, 1, 4, 3, 5]
+        >>> head = LinkedList.fromList([1, 2])
+        >>> result = s.reverseKGroup(head, 3)
+        >>> LinkedList.toList(result)
+        [1, 2]
         """
         if head is None:
             return None
 
-        # length = len(head)
-        self.reverse(head, k)
+        rhead, rtail, beyond_tail = self.reverse(head, k)
+        result = rhead
+        while beyond_tail:
+            new_head, new_tail, new_beyond_tail = self.reverse(beyond_tail, k)
+            rtail.next = new_head
+            rtail = new_tail
+            beyond_tail = new_beyond_tail
+
+        if rtail:
+            rtail.next = None
+        return result
+
+
+
+
+
 
 
 
