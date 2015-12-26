@@ -1,6 +1,6 @@
 __author__ = 'guang'
 
-from linklist import LinkedList
+from linklist import LinkedList, ListNode
 
 class Solution(object):
     def length(self, head):
@@ -48,6 +48,59 @@ class Solution(object):
 
         return node
 
+    def empty(self, ls):
+        if ls is None:
+            return True
+
+        head, tail = ls
+        return head is None and tail is None
+
+    def cons(self, a, ls):
+        """
+        >>> s = Solution()
+        >>> a = ListNode(3)
+        >>> ls = None, None
+        >>> result = s.cons(a, ls)
+        >>> head, tail = result
+        >>> head.val
+        3
+        >>> tail.val
+        3
+        """
+        if a is None:
+            return ls
+        elif self.empty(ls):
+            a.next = None
+            return a, a
+        else:
+            head, tail = ls
+            a.next = head
+            return a, tail
+
+    def append(self, a, ls):
+        if a is None:
+            return ls
+        elif self.empty(ls):
+            a.next = None
+            return a, a
+        else:
+            head, tail = ls
+            tail.next = a
+            a.next = None
+            return head, a
+
+    def concat(self, ls1, ls2):
+        if self.empty(ls1):
+            return ls2
+        elif self.empty(ls2):
+            return ls1
+        else:
+            head1, tail1 = ls1
+            head2, tail2 = ls2
+
+            tail1.next = head2
+            return head1, tail2
+
     def reorderList(self, head):
         """
         :type head: ListNode
@@ -85,14 +138,31 @@ class Solution(object):
         if length <= 2:
             return
 
+        if length % 2 == 0:
+            left_index = length / 2
+            right_index = length / 2 + 1
+        else:
+            left_index = length / 2 + 1
+            right_index = left_index
+
+        count = 1
+        stack = []
+        tail = None, None
         node = head
-        succeeding = node.next
-        precede_tail = self.kth(head, length - 1)
-        tail = precede_tail.next
-
-        node.next = tail
-        tail.next = succeeding
-        precede_tail.next = None
-
-        self.reorderList(succeeding)
+        while node:
+            if count < left_index:
+                stack.append(node)
+                node = node.next
+            elif count == left_index or count == right_index:
+                succeeding = node.next
+                tail = self.append(node, tail)
+                node = succeeding
+            elif count > right_index:
+                left = stack.pop()
+                succeeding = node.next
+                right = self.cons(node, None)
+                pair = self.cons(left, right)
+                tail = self.concat(pair, tail)
+                node = succeeding
+            count += 1
 
