@@ -4,54 +4,40 @@ from linklist import LinkedList, ListNode
 from bst import TreeNode, BST
 
 class Solution(object):
-    def find_parent(self, x, root):
+
+    def is_leaf(self, tree):
+        return tree and tree.left is None and tree.right is None
+
+    def is_full(self, tree, count):
         """
         >>> s = Solution()
-        >>> root = TreeNode(1)
-        >>> two = TreeNode(2)
-        >>> three = TreeNode(3)
-        >>> root.right = two
-        >>> two.right = three
-        >>> p = s.find_parent(0, root)
-        >>> p.val
-        1
-        >>> p = s.find_parent(4, root)
-        >>> p.val
-        3
+        >>> s.is_full(TreeNode(1), 1)
+        True
+        >>> one, two = TreeNode(1), TreeNode(2)
+        >>> two.left = one
+        >>> s.is_full(two, 2)
+        False
         """
-        if root is None:
-            return None
-
-        p = root
-        while p:
-            if x < p.val:
-                if p.left:
-                    p = p.left
-                else:
-                    return p
-            else:
-                if p.right:
-                    p = p.right
-                else:
-                    return p
+        n = self.height(tree)
+        return count == (2 ** n) - 1
 
     def cons(self, x, tree, count):
         """
         >>> s = Solution()
-        >>> one, two, three = TreeNode(1), TreeNode(2), TreeNode(3)
-        >>> one.right, two.right = two, three
-        >>> result = s.cons(4, one)
-        >>> three.right.val
-        4
-        >>> tree = one
-        >>> result = s.cons(0, tree)
-        >>> one.left.val
-        0
+        >>> tree = s.cons(1, None, 0)
+        >>> tree.val
+        1
+        >>> tree = s.cons(2, tree, 1)
+        >>> tree.val == 2 and tree.left.val == 1
+        True
+        >>> tree = s.cons(3, tree, 2)
+        >>> tree.val == 2 and tree.left.val == 1 and tree.right.val == 3
+        True
         """
-        # construct a new BST
         if tree is None:
             tree = TreeNode(x)
             return tree
+
         # construct subtree and append it to original tree
         n = self.height(tree)
         if self.is_full(tree, count):
@@ -59,14 +45,8 @@ class Solution(object):
             new_root.left = tree
             return new_root
         else:
-            tree.right = self.cons(x, tree.right, count - 2 ^ (n - 1))
-
-    def is_leaf(self, tree):
-        return tree and tree.left is None and tree.right is None
-
-    def is_full(self, tree, count):
-        n = self.height(tree)
-        return count == 2 ^ n - 1
+            tree.right = self.cons(x, tree.right, count - 2 ** (n - 1))
+            return tree
 
     def height(self, tree):
         """
@@ -86,75 +66,6 @@ class Solution(object):
         else:
             return 1 + max(self.height(tree.left), self.height(tree.right))
 
-    def is_balance(self, tree):
-        """
-        >>> s = Solution()
-        >>> one, two, three = TreeNode(1), TreeNode(2), TreeNode(3)
-        >>> one.right, two.right = two, three
-        >>> s.is_balance(one)
-        False
-        >>> s.is_balance(two)
-        True
-        >>> s.is_balance(three)
-        True
-        >>> one, two, three, four, five, six = TreeNode(1), TreeNode(2), TreeNode(3), TreeNode(4), TreeNode(5), TreeNode(6)
-        >>> four.left, three.left, two.left = three, two, one
-        >>> four.right, five.right = five, six
-        >>> s.is_balance(four)
-        False
-        """
-        if tree is None:
-            return True
-
-        left_height = self.height(tree.left)
-        right_height = self.height(tree.right)
-        return abs(left_height - right_height) <= 1 and self.is_balance(tree.left) and self.is_balance(tree.right)
-
-    def rebalance(self, tree):
-        """
-        >>> s = Solution()
-        >>> one, two, three = TreeNode(1), TreeNode(2), TreeNode(3)
-        >>> one.right, two.right = two, three
-        >>> tree = s.rebalance(one)
-        >>> tree.val
-        2
-        >>> tree.left.val
-        1
-        >>> tree.right.val
-        3
-        >>> one, two, three = TreeNode(1), TreeNode(2), TreeNode(3)
-        >>> three.left, two.left = two, one
-        >>> result = s.rebalance(three)
-        >>> result.val
-        2
-        >>> result.right.val
-        3
-        >>> result.left.val
-        1
-        """
-        if self.is_leaf(tree) or self.is_balance(tree):
-            return tree
-
-        tree.left = self.rebalance(tree.left)
-        tree.right = self.rebalance(tree.right)
-        if self.is_balance(tree):
-            return tree
-        else:
-            left_height = self.height(tree.left)
-            right_height = self.height(tree.right)
-            if right_height - left_height > 1:
-                new_root = tree.right
-                p = self.find_parent(tree.val, new_root)
-                p.left = tree
-                tree.right = None
-                return self.rebalance(new_root)
-            else:
-                new_root = tree.left
-                p = self.find_parent(tree.val, new_root)
-                p.right = tree
-                tree.left = None
-                return self.rebalance(new_root)
-
     def sortedListToBST(self, head):
         """
         :type head: ListNode
@@ -169,6 +80,7 @@ class Solution(object):
         >>> result = s.sortedListToBST(head)
         >>> tree = BST(result)
         >>> tree.show()
+        >>> head = LinkedList
 
         """
         if head is None:
@@ -178,9 +90,9 @@ class Solution(object):
         tree = None
         count = 0
         while node:
-            count += 1
             tree = self.cons(node.val, tree, count)
             node = node.next
+            count += 1
 
         return tree
 
