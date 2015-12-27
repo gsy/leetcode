@@ -35,7 +35,7 @@ class Solution(object):
                 else:
                     return p
 
-    def cons(self, x, tree):
+    def cons(self, x, tree, count):
         """
         >>> s = Solution()
         >>> one, two, three = TreeNode(1), TreeNode(2), TreeNode(3)
@@ -49,21 +49,24 @@ class Solution(object):
         0
         """
         # construct a new BST
-
         if tree is None:
             tree = TreeNode(x)
             return tree
         # construct subtree and append it to original tree
-        node = TreeNode(x)
-        p = self.find_parent(x, tree)
-        if x < p.val:
-            p.left = node
+        n = self.height(tree)
+        if self.is_full(tree, count):
+            new_root = TreeNode(x)
+            new_root.left = tree
+            return new_root
         else:
-            p.right = node
-        return tree
+            tree.right = self.cons(x, tree.right, count - 2 ^ (n - 1))
 
     def is_leaf(self, tree):
-        return tree is None or (tree.left is None and tree.right is None)
+        return tree and tree.left is None and tree.right is None
+
+    def is_full(self, tree, count):
+        n = self.height(tree)
+        return count == 2 ^ n - 1
 
     def height(self, tree):
         """
@@ -173,9 +176,10 @@ class Solution(object):
 
         node = head
         tree = None
+        count = 0
         while node:
-            tree = self.cons(node.val, tree)
-            tree = self.rebalance(tree)
+            count += 1
+            tree = self.cons(node.val, tree, count)
             node = node.next
 
         return tree
