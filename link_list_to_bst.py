@@ -20,72 +20,11 @@ class Solution(object):
 
         return count
 
-    def is_leaf(self, tree):
-        return tree and tree.left is None and tree.right is None
-
-    def is_full(self, tree, count):
-        """
-        >>> s = Solution()
-        >>> s.is_full(TreeNode(1), 1)
-        True
-        >>> one, two = TreeNode(1), TreeNode(2)
-        >>> two.left = one
-        >>> s.is_full(two, 2)
-        False
-        """
-        n = self.height(tree)
-        return count == (2 ** n) - 1
-
-    def cons(self, x, tree, count):
-        """
-        >>> s = Solution()
-        >>> tree = s.cons(1, None, 0)
-        >>> tree.val
-        1
-        >>> tree = s.cons(2, tree, 1)
-        >>> tree.val == 2 and tree.left.val == 1
-        True
-        >>> tree = s.cons(3, tree, 2)
-        >>> tree.val == 2 and tree.left.val == 1 and tree.right.val == 3
-        True
-        """
-        if tree is None:
-            tree = TreeNode(x)
-            return tree
-
-        # construct subtree and append it to original tree
-        n = self.height(tree)
-        if self.is_full(tree, count):
-            new_root = TreeNode(x)
-            new_root.left = tree
-            return new_root
-        else:
-            tree.right = self.cons(x, tree.right, count - 2 ** (n - 1))
-            return tree
-
-    def height(self, tree):
-        """
-        >>> s = Solution()
-        >>> one, two, three = TreeNode(1), TreeNode(2), TreeNode(3)
-        >>> one.right, two.right = two, three
-        >>> s.height(one)
-        3
-        >>> s.height(two)
-        2
-        >>> s.height(three)
-        1
-        """
-        count = 0
-        if tree is None:
-            return count
-        else:
-            return 1 + max(self.height(tree.left), self.height(tree.right))
-
-    def list_to_BST_helper(self, node, start, end):
+    def helper(self, node, start, end):
         """
         >>> s = Solution()
         >>> node = LinkedList.fromList([4, 5])
-        >>> tree, head = s.list_to_BST_helper(node, 4, 5)
+        >>> tree, head = s.helper(node, 4, 5)
         >>> tree.val
         5
         >>> tree.left.val
@@ -93,7 +32,7 @@ class Solution(object):
         >>> head.val
         5
         >>> node = LinkedList.fromList([1, 2])
-        >>> tree, head = s.list_to_BST_helper(node, 1, 2)
+        >>> tree, head = s.helper(node, 1, 2)
         >>> tree.val
         2
         >>> tree.left.val
@@ -101,14 +40,14 @@ class Solution(object):
         >>> head.val
         2
         >>> node = LinkedList.fromList([1, 2, 3, 4, 5])
-        >>> tree, head = s.list_to_BST_helper(node, 1, 5)
+        >>> tree, head = s.helper(node, 1, 5)
         >>> head.val
         5
 
         # >>> BST(tree).show()
 
         >>> node = LinkedList.fromList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
-        >>> tree, head = s.list_to_BST_helper(node, 1, 15)
+        >>> tree, head = s.helper(node, 1, 15)
         >>> head.val
         15
         >>> BST(tree).show()
@@ -140,12 +79,12 @@ class Solution(object):
             return root, node
 
         middle = start + length / 2
-        left, head = self.list_to_BST_helper(node, start, middle - 1)
+        left, head = self.helper(node, start, middle - 1)
         head = head.next
         root = TreeNode(head.val)
         root.left = left
         head = head.next
-        right, new_head = self.list_to_BST_helper(head, middle + 1, end)
+        right, new_head = self.helper(head, middle + 1, end)
         root.right = right
         return root, new_head
 
@@ -175,7 +114,7 @@ class Solution(object):
             return None
 
         length = self.length(head)
-        return self.list_to_BST_helper(head, 1, length)[0]
+        return self.helper(head, 1, length)[0]
 
 
 
