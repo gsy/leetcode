@@ -3,63 +3,61 @@ __author__ = 'guang'
 from linklist import LinkedList
 
 class Solution(object):
-    def length(self, head):
+    def middle_and_length(self, head):
         """
         >>> s = Solution()
         >>> head = LinkedList.fromList([1, 2, 3])
-        >>> s.length(head)
+        >>> middle, length = s.middle_and_length(head)
+        >>> length
         3
-        >>> s.length(None)
+        >>> middle.val
+        2
+        >>> middle, length = s.middle_and_length(None)
+        >>> length
         0
-        """
-        count = 0
-        node = head
-        while node:
-            count += 1
-            node = node.next
-
-        return count
-
-    def kth(self, head, k):
-        """
-        >>> s = Solution()
-        >>> head = LinkedList.fromList([1, 2, 3, 4, 5])
-        >>> result = s.kth(head, 1)
-        >>> result.val
+        >>> middle, length = s.middle_and_length(LinkedList.fromList([1]))
+        >>> length
         1
-        >>> result = s.kth(head, 3)
-        >>> result.val
-        3
-        >>> result = s.kth(head, 5)
-        >>> result.val
-        5
-        >>> result = s.kth(head, 10)
-        >>> result is None
+        >>> middle.val
+        1
+        >>> head = LinkedList.fromList([1, 2])
+        >>> middle, length = s.middle_and_length(head)
+        >>> middle.val == 1 and length == 2
+        True
+        >>> head = LinkedList.fromList([1, 2, 3, 4])
+        >>> middle, length = s.middle_and_length(head)
+        >>> middle.val == 2 and length == 4
         True
         """
         if head is None:
-            return None
+            return None, 0
 
+        slower = head
+        faster = head.next
         count = 1
-        node = head
-        while node and count < k:
+        while faster:
             count += 1
-            node = node.next
+            faster = faster.next
+            if faster is None:
+                return slower, count
+            count += 1
+            faster = faster.next
+            slower = slower.next
 
-        return node
+        return slower, count
 
-    def isRecursivePalindrome(self, left, n, right, m, length):
-        if n + m < length + 1:
-            return self.isRecursivePalindrome(left.next, n + 1, right, m, length) and \
-                   self.isRecursivePalindrome(left, n, right.next, m + 1, length)
+    def isRecursivePalindrome(self, left, lindex, right, rindex, length):
 
-        elif n + m == length + 1:
-            if left.val != right.val:
-                return False
+        if lindex + rindex == length + 1:
+            return left.val == right.val, right
+
+        elif lindex + rindex < length + 1:
+            result, end = self.isRecursivePalindrome(left.next, lindex + 1, right, rindex, length)
+            right = end.next
+            if result:
+                return left.val == right.val, right
             else:
-                return True
-        else:
-            return False
+                return False, right
 
     def isPalindrome(self, head):
         """
@@ -83,21 +81,24 @@ class Solution(object):
         >>> head = LinkedList.fromList([1, 2, 2, 1])
         >>> s.isPalindrome(head)
         True
+        >>> head = LinkedList.fromList([1, 2, 3, 8, 7, 2, 1])
+        >>> s.isPalindrome(head)
+        False
         """
         if head is None:
-            return False
+            return True
 
-        length = self.length(head)
+        middle, length = self.middle_and_length(head)
 
         if length == 1:
             return True
 
+        lindex = 1
         if length % 2 == 0:
-            m = length / 2 + 1
-            right = self.kth(head, m)
+            rindex = length / 2 + 1
         else:
-            m = length / 2 + 2
-            right = self.kth(head, m)
+            rindex = length / 2 + 2
+        right = middle.next
 
-        return self.isRecursivePalindrome(head, 1, right, m, length)
+        return self.isRecursivePalindrome(head, lindex, right, rindex, length)[0]
 
