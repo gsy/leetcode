@@ -1,11 +1,6 @@
 __author__ = 'guang'
 
 from bst import TreeNode
-try:
-    import cPickle as pickle
-except:
-    import pickle
-
 
 class Codec:
 
@@ -25,7 +20,8 @@ class Codec:
         >>> tree.left.val
         1
         """
-        return pickle.dumps(root)
+
+
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -33,7 +29,7 @@ class Codec:
         :type data: str
         :rtype: TreeNode
         """
-        return pickle.loads(data)
+
 
 
 # Your Codec object will be instantiated and called as such:
