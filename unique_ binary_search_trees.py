@@ -24,6 +24,8 @@ class Solution(object):
         5
         >>> s.numTrees(19)
         1767263190
+        >>> s.numTrees(10)
+        16796
         """
         p = [1, 1]
 
