@@ -25,6 +25,7 @@ class TreeNode(object):
             show_node(node.right, k + 1)
         show_node(self, 0)
 
+
 class BST(object):
     def __init__(self, root):
         self.root = root
