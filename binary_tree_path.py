@@ -6,42 +6,6 @@ class Solution(object):
     def is_leaf(self, node):
         return node and node.left is None and node.right is None
 
-    def dfs(self, node):
-        """
-        >>> s = Solution()
-        >>> s.dfs(None)
-        []
-        >>> s.dfs(TreeNode(4))
-        [[4]]
-        >>> tree = TreeNode(None).from_string("1,2,3")
-        >>> s.dfs(tree)
-        [[1, 2], [1, 3]]
-        >>> tree = TreeNode(None).from_string("1,2,3,4,5")
-        >>> s.dfs(tree)
-        [[1, 2, 4], [1, 2, 5], [1, 3]]
-        """
-        if node is None:
-            return []
-
-        if self.is_leaf(node):
-            return [[str(node.val)]]
-
-        result = []
-        left = self.dfs(node.left)
-        right = self.dfs(node.right)
-
-        for sub in left:
-            tmp = [str(node.val)]
-            tmp.extend(sub)
-            result.append(tmp)
-
-        for sub in right:
-            tmp = [str(node.val)]
-            tmp.extend(sub)
-            result.append(tmp)
-
-        return result
-
     def binaryTreePaths(self, root):
         """
         :type root: TreeNode
@@ -61,9 +25,24 @@ class Solution(object):
         if root is None:
             return []
 
+        paths = []
+        stack = [root]
+        seen = []
+        while stack:
+            node = stack[-1]
+            if node.left and node.left not in seen:
+                stack.append(node.left)
+            elif node.right and node.right not in seen:
+                stack.append(node.right)
+            else:
+                if self.is_leaf(node):
+                    paths.append(stack[::])
+                seen.append(stack.pop())
+
         result = []
-        paths = self.dfs(root)
         for path in paths:
-            result.append("->".join(path))
+            values = [str(node.val) for node in path]
+            result.append("->".join(values))
+
         return result
 
