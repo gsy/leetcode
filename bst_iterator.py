@@ -29,7 +29,7 @@ class BSTIterator(object):
         >>> nodes = BSTIterator(root).sentinels
         >>> values = [node.val for node in nodes if node]
         >>> values
-        [1, 2, 10]
+        [10, 2, 1]
         """
         node = root
         result = []
@@ -37,7 +37,7 @@ class BSTIterator(object):
             result.append(node)
             node = node.left
 
-        return result[::-1]
+        return result
 
     def hasNext(self):
         """
@@ -57,11 +57,10 @@ class BSTIterator(object):
         """
         :rtype: int
         """
-        sentinel = self.sentinels.pop(0)
+        sentinel = self.sentinels.pop()
         if sentinel.right:
             new_sentinels = self._sentinels_of(sentinel.right)
-            new_sentinels.extend(self.sentinels)
-            self.sentinels = new_sentinels
+            self.sentinels.extend(new_sentinels)
         return sentinel.val
 
 # Your BSTIterator will be called like this:
