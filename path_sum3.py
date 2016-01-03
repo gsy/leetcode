@@ -1,7 +1,5 @@
 __author__ = 'guang'
 
-__author__ = 'guang'
-
 from bst import TreeNode
 
 class Solution(object):
