@@ -7,14 +7,19 @@ class Solution(object):
         :return:
         >>> s = Solution()
         >>> root = TreeNode(None).from_string("6,2,8,0,4,7,9,#,#,3,5")
-        >>> result = [node.val for node in s.inorder_traversal(root)]
-        >>> result
-        [0, 2, 3, 4, 5, 6, 7, 8, 9]
         """
         if root is None:
-            return []
+            yield None
 
-        return self.inorder_traversal(root.left) + [root] + self.inorder_traversal(root.right)
+        if root.left:
+            for node in self.inorder_traversal(root.left):
+                yield node
+
+        yield root
+
+        if root.right:
+            for node in self.inorder_traversal(root.right):
+                yield node
 
     def kthSmallest(self, root, k):
         """
@@ -27,9 +32,26 @@ class Solution(object):
         0
         >>> s.kthSmallest(root, 2)
         2
+        >>> s.kthSmallest(root, 3)
+        3
         """
         if root is None:
             return None
 
         nodes = self.inorder_traversal(root)
-        return nodes[k - 1].val
+        node = None
+
+        for i in range(k):
+            node = nodes.next()
+
+        return node.val if node else None
+
+if __name__ == '__main__':
+    s = Solution()
+    root = TreeNode(None).from_string("6,2,8,0,4,7,9,#,#,3,5")
+    nodes = s.inorder_traversal(root)
+    print type(nodes)
+    for i in range(3):
+        node = nodes.next()
+        print node.val
+
