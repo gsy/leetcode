@@ -22,4 +22,15 @@ class Solution(object):
         if root is None:
             return []
 
-        return [root.val] + self.preorderTraversal(root.left) + self.preorderTraversal(root.right)
+        result = []
+        path = [root]
+
+        while path:
+            node = path.pop(-1)
+            if node.right:
+                path.append(node.right)
+            if node.left:
+                path.append(node.left)
+            result.append(node.val)
+
+        return result
