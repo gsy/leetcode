@@ -1,20 +1,30 @@
 __author__ = 'guang'
 
 class Solution(object):
-    def all_match(self, result, s, left, right):
-        length = right - left + 1
-        if length < 2:
-            return False
+    def valid(self, s):
+        """
+        >>> s = Solution()
+        >>> text = "(()(()"
+        >>> result = s.valid(text)
+        >>> result
+        [1, 2, 4, 5]
+        >>> text = "((((()(()))))"
+        >>> result = s.valid(text)
+        >>> result.sort()
+        >>> result
+        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        """
+        stack = []
+        result = set()
 
-        if s[left] == '(' and s[right] == ')':
-            if result[left+1][right-1] == (right - 1) - (left + 1) + 1:
-                return True
+        for index, item in enumerate(s):
+            if item == '(':
+                stack.append(index)
+            elif len(stack) > 0:
+                result.add(stack.pop())
+                result.add(index)
 
-            for k in range(left+1, right-1):
-                if result[left][k] == k - left + 1 and result[k+1][right] == right - (k+1) + 1:
-                    return True
-
-        return False
+        return frozenset(result)
 
     def longestValidParentheses(self, s):
         """
@@ -44,13 +54,10 @@ class Solution(object):
         2
         >>> s.longestValidParentheses("")
         0
-
         >>> s.longestValidParentheses("((())))")
         6
-
         >>> s.longestValidParentheses("(())(())((()))")
         14
-
         >>> s.longestValidParentheses("(()(()()))")
         10
         >>> s.longestValidParentheses("(())(())((()))()")
@@ -61,6 +68,18 @@ class Solution(object):
         4
         >>> s.longestValidParentheses("))(())(())((())))()((())()(()))())(((())))((())((((()()))()()((()())(()))))((((()()((())())())()))()))))(()))))()((())))())((()()))))(()))((((()(()))))(((((()(")
         68
+        >>> s.longestValidParentheses("()())")
+        4
+        >>> s.longestValidParentheses("((((()(()))))")
+        12
+        >>> s.longestValidParentheses("(()(()")
+        2
+        >>> s.longestValidParentheses("(()(())")
+        6
+        >>> s.longestValidParentheses("(()()(")
+        4
+        >>> s.longestValidParentheses("()())((((()(()))))()((()(()(())()))(()((()(())(((()((())())(((())(())())()()(()((((((()()(()())()))())()((()())((((((())()()()))(((()()((()()(()((((()))((()))(()(()())()(()((())())))(()()())()((((())")
+        46
         """
         s = s.lstrip(')').rstrip('(')
 
@@ -68,29 +87,21 @@ class Solution(object):
         if length < 2:
             return 0
 
-        result = [[0 for col in range(length)] for row in range(length)]
+        last_value = 0
+        result = 0
+        valid = self.valid(s)
 
-        l = 1
-        for i in range(0, length - l):
-            j = i + l
-            if s[i] == '(' and s[j] == ')':
-                result[i][j] = 2
+        for index, c in enumerate(s):
+            if c == '(':
+                if index not in valid:
+                    last_value = 0
             else:
-                result[i][j] = 0
-
-        for l in range(2, length):
-            for i in range(0, length - l):
-                j = i + l
-
-                if self.all_match(result, s, i, j):
-                    result[i][j] = j - i + 1
+                if index in valid:
+                    last_value += 2
                 else:
-                    result[i][j] = max(result[i+1][j], result[i][j-1])
+                    last_value = 0
 
-        return result[0][length-1]
+            if last_value > result:
+                result = last_value
 
-
-
-
-
-
+        return result
