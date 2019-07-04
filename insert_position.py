@@ -1,5 +1,6 @@
 __author__ = 'guang'
 
+
 class Solution(object):
     def searchInsert(self, nums, target):
         """

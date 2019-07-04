@@ -7,27 +7,19 @@ class Solution:
         if length == 0:
             return 0
         elif length == 1:
-            return 0 if nums[0] >= target else 1
+            return 0 if target <= nums[0] else 1
         else:
-            left, right = 0, length-1
-            while True:
-                middle = int((left + right) / 2)
-                if left >= right:
-                    break
-                if left + 1 == right:
-                    if target > nums[right]:
-                        return right + 1
-                    elif target > nums[left]:
-                        return right
-                    elif target < nums[left]:
-                        return left - 1
-                    else:
-                        return left
+            left, right = 0, length - 1
 
+            while left < right:
+                middle = int((left + right) / 2)
                 if nums[middle] == target:
                     return middle
-                elif nums[middle] > target:
-                    right = middle - 1
-                else:
+                if target > nums[middle]:
                     left = middle + 1
-            return middle
+                else:
+                    right = middle - 1
+            if target <= nums[left]:
+                return left
+
+            return left + 1
