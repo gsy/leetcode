@@ -1,5 +1,3 @@
-__author__ = 'guang'
-
 class Solution(object):
     def match(self, x, y):
         return (x, y) in [('(', ')'), ('[', ']'), ('{', '}')]
@@ -24,15 +22,14 @@ class Solution(object):
         if len(s) == 0:
             return True
 
-        open = ['(', '[', '{']
-        close = [')', ']', '}']
+        open_parentheses = ['(', '[', '{']
 
-        if s[-1] in open:
+        if s[-1] in open_parentheses:
             return False
 
         stack = []
         for x in s:
-            if x in open:
+            if x in open_parentheses:
                 stack.append(x)
             else:
                 if not stack:
