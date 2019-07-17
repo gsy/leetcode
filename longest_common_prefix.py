@@ -47,9 +47,3 @@ class Solution(object):
                 break
 
         return x[:length]
-
-
-
-
-
-
