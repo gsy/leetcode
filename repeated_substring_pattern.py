@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
+# https://leetcode-cn.com/problems/repeated-substring-pattern/
 
 
 class Solution:
-    def is_substring(self, pattern, string):
-        if string == pattern:
-            return True
-        elif string == "" or pattern == "":
+    def is_repeated(self, s, length, step):
+        if step >= length:
             return False
 
-        length_pattern = len(pattern)
-        length_string = len(string)
-        if length_pattern > length_string:
-            return False
-
-        for index, char in enumerate(pattern):
-            if char != string[index]:
+        start, pattern = 0, None
+        while start < length:
+            current = s[start: start + step]
+            if pattern is None:
+                pattern = current
+            elif pattern != current:
                 return False
+            start = start + step
         return True
 
     def repeatedSubstringPattern(self, s):
@@ -23,20 +22,9 @@ class Solution:
         if length <= 1:
             return False
 
-        if length % 2 == 0:
-            half = int(length/2)
-            if (s[half:] == s[:half]):
-                return True
-
-        pattern, pattern_length = "", 0
-        while pattern_length <= int(length / 2):
-            pattern_length = pattern_length + 1
-            remain = length - pattern_length
-            pattern = s[remain:]
-            if remain % 2 == 0:
-                half = int(remain/2)
-                left, right = s[0:half], s[half:remain]
-                if left == right and self.is_substring(pattern, left):
+        for step in range(int(length/2), 0, -1):
+            if length % step == 0:
+                if self.is_repeated(s, length, step):
                     return True
         return False
 
@@ -63,9 +51,6 @@ if __name__ == '__main__':
     assert r is False
 
     r = s.repeatedSubstringPattern("abcabc")
-    assert r is True
-
-    r = s.is_substring("abc", "abc")
     assert r is True
 
     r = s.repeatedSubstringPattern("abcabcabc")

@@ -3,12 +3,25 @@
 
 class Solution:
     def findLUSlength(self, a, b):
-        length1, length2 = len(a), len(b)
-        # b 是比较短的
-        if length1 < length2:
-            length1, length2 = length2, length1
-            a, b = b, a
+        if a == b:
+            return -1
+        return max(len(a), len(b))
 
-        matrix = [[0] * length2] * length2
-        result = 0
-        return result
+
+if __name__ == '__main__':
+    s = Solution()
+    r = s.findLUSlength("aba", "cdc")
+    print(r)
+    assert r == 3
+
+    r = s.findLUSlength("hello", "halo")
+    print(r)
+    assert r == 5
+
+    r = s.findLUSlength("aefawfawfawfaw", "aefawfeawfwafwaef")
+    print(r)
+    assert r == 17
+
+    r = s.findLUSlength("horbxeemlgqpqbujbdagizcfairalg", "iwvtgyojrfhyzgyzeikqagpfjoaeen")
+    print(r)
+    assert r == 30
