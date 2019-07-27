@@ -5,7 +5,7 @@ class Solution:
     def nextGreaterElement(self, nums1, nums2):
         length2 = len(nums2)
         if length2 == 0:
-            return -1
+            return []
 
         mapping = {}
         prev = nums2[0]
