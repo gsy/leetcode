@@ -1,31 +1,34 @@
 # -*- coding: utf-8 -*-
 
 class Solution:
-    def search_higher_temperature(self, current, mapping):
-        for t in range(current+1, 101):
-            if t in mapping:
-                return mapping[t]
-        return None
-
     def dailyTemperatures(self, ls):
         length = len(ls)
-        result, temperature_to_index = [], {}
-        for j in range(length-1, -1, -1):
-            current = ls[j]
-            higher = self.search_higher_temperature(current, temperature_to_index)
-            temperature_to_index[current] = j
-            for key, value in temperature_to_index.items():
-                if key < current:
-                    temperature_to_index[key] = j
+        right, stack = 1, [0]
+        while right < length:
+            index = stack[-1]
+            while ls[right] > ls[index]:
+                stack.pop()
+                mapping[index] = right - index
+                if len(stack) == 0:
+                    break
+                else:
+                    index = stack[-1]
 
-            if higher:
-                result.append(higher - j)
-            else:
-                result.append(0)
-        return result[::-1]
+            stack.append(right)
+            right = right + 1
+
+        result = []
+        for key in range(length):
+            result.append(mapping.get(key, 0))
+        return result
+
 
 if __name__ == "__main__":
     s = Solution()
     r = s.dailyTemperatures([73, 74, 75, 71, 69, 72, 76, 73])
     print(r)
     assert r == [1, 1, 4, 2, 1, 1, 0, 0]
+
+    r = s.dailyTemperatures([73])
+    print(r)
+    assert r == [0]
