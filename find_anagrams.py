@@ -2,37 +2,48 @@
 
 
 class Solution:
-    def hashing(self, word):
-        result = 1
-        for i, char in enumerate(word):
-            result = result * (ord(char) - ord('a') + 1)
+    def word_count(self, word):
+        result = {}
+        for char in word:
+            result[char] = result.get(char, 0) + 1
         return result
+
+    def equal(self, current, words):
+        for key, value in words.items():
+            if key not in current or current[key] != value:
+                return False
+        return True
 
     def findAnagrams(self, s, p):
-        length_s, length_p = len(s), len(p)
-        if length_s < length_p:
-            return ""
-        result = []
+        # 滑动窗口，窗口的大小固定？
+        # 滑动的过程中只要计算　left, right 的变化值
+        lens, lenp = len(s), len(p)
+        if lens < lenp:
+            return []
 
-        standard = self.hashing(p)
-        for i in range(length_s):
-            if i + length_p > length_s:
-                break
-            current = self.hashing(s[i: i + length_p])
-            if current == standard:
-                result.append(i)
-
+        current, result = {}, []
+        words = self.word_count(p)
+        for left in range(0, lens - lenp + 1):
+            right = left + lenp - 1
+            if left == 0:
+                for i in range(left, left + lenp):
+                    char = s[i]
+                    current[char] = current.get(char, 0) + 1
+            else:
+                current[s[left-1]] = current[s[left - 1]] - 1
+                current[s[right]] = current.get(s[right], 0) + 1
+            # print(left, current)
+            if self.equal(current, words):
+                result.append(left)
         return result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     s = Solution()
     r = s.findAnagrams("cbaebabacd", "abc")
-    # print(r)
+    print(r)
     assert r == [0, 6]
 
-    r = s.findAnagrams("abca", "abc")
-    assert r == [0, 1]
-
-    r = s.findAnagrams("abcab", "abc")
+    r = s.findAnagrams("abab", "ab")
+    print(r)
     assert r == [0, 1, 2]
