@@ -1,38 +1,33 @@
 # -*- coding: utf-8 -*-
 
 class Solution:
-    def __init__(self):
-        calculated = [1, 2, 3, 4, 5]
-        seen = set(calculated)
-        primes = [2, 3, 5]
-        index, start = 4, 5
-        while index <= 1000:
-            start = start + 1
-            for prime in primes:
-                if start % prime == 0 and int(start / prime) in seen:
-                    calculated.append(start)
-                    seen.add(start)
-                    index = index + 1
-                    break
-        self.calculated = calculated
-
     def nthUglyNumber(self, n):
-        # calculated = [1, 2, 3, 4, 5]
-        # primes = [2, 3, 5]
-        # index, start = 4, 5
-        # while index <= n:
-        #     start = start + 1
-        #     for prime in primes:
-        #         if start % prime == 0 and int(start / prime) in calculated:
-        #             calculated.append(start)
-        #             index = index + 1
-        #             break
-        return self.calculated[n-1]
+        current = 1
+        time2, time3, time5 = 1, 1, 1
+        prev = [0, 1]
+        process = ""
+        for i in range(1, n):
+            current = min(prev[time2] * 2, prev[time3] * 3, prev[time5] * 5)
+            if current == prev[time2] * 2:
+                time2 = time2 + 1
+            if current == prev[time3] * 3:
+                time3 = time3 + 1
+            if current == prev[time5] * 5:
+                time5 = time5 + 1
+            prev.append(current)
+            # if process:
+            #     process = process + "->" + str(current)
+            # else:
+            #     process = str(current)
+            # print(process)
+        return current
+
 
 
 if __name__ == "__main__":
     s = Solution()
     r = s.nthUglyNumber(1)
+    print(r)
     assert r == 1
 
     r = s.nthUglyNumber(2)
