@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 class Solution:
     def word_count(self, word):
         result = {}
@@ -35,6 +36,7 @@ class Solution:
             if self.equal(current, words):
                 result.append(left)
         return result
+
 
 if __name__ == "__main__":
     s = Solution()
