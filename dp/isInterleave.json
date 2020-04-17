@@ -1,0 +1,46 @@
+{
+  "module": "isInterleave",
+  "expand": true,
+  "cases": [
+    {
+      "input": ["aa", "ab", "abaa"],
+      "output": true
+    },
+    {
+      "input": ["aabcc", "dbbca", "aadbbcbcac"],
+      "output": true
+    },
+    {
+      "input": ["aabcc", "dbbca", "aadbbbaccc"],
+      "output": false
+    },
+    {
+      "input": ["", "", ""],
+      "output": true
+    },
+    {
+      "input": ["", "", "a"],
+      "output": false
+    },
+    {
+      "input": ["", "a", "a"],
+      "output": true
+    },
+    {
+      "input": ["ab", "bc", "abbc"],
+      "output": true
+    },
+    {
+      "input": ["ab", "bc", "abcb"],
+      "output": true
+    },
+    {
+      "input": ["ab", "bc", "acbb"],
+      "output": false
+    },
+    {
+      "input": ["db", "b", "cbb"],
+      "output": false
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "module": "reorganizeString",
+  "expand": true,
+  "cases": [
+    {
+      "input": ["aab"],
+      "output": "aba"
+    },
+    {
+      "input": ["aaab"],
+      "output": ""
+    },
+    {
+      "input": ["vvvlo"],
+      "output": "vlvov"
+    },
+    {
+      "input": ["baaba"],
+      "output": "ababa"
+    },
+    {
+      "input": ["tndsewnllhrtwsvxenkscbivijfqnysamckzoyfnapuotmdexzkkrpmppttficzerdndssuveompqkemtbwbodrhwsfpbmkafpwyedpcowruntvymxtyyejqtajkcjakghtdwmuygecjncxzcxezgecrxonnszmqmecgvqqkdagvaaucewelchsmebikscciegzoiamovdojrmmwgbxeygibxxltemfgpogjkhobmhwquizuwvhfaiavsxhiknysdghcawcrphaykyashchyomklvghkyabxatmrkmrfsppfhgrwywtlxebgzmevefcqquvhvgounldxkdzndwybxhtycmlybhaaqvodntsvfhwcuhvuccwcsxelafyzushjhfyklvghpfvknprfouevsxmcuhiiiewcluehpmzrjzffnrptwbuhnyahrbzqvirvmffbxvrmynfcnupnukayjghpusewdwrbkhvjnveuiionefmnfxao"],
+      "output": ""
+    }
+  ]
+}

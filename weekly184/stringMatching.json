@@ -1,0 +1,18 @@
+{
+  "module": "stringMatching",
+  "expand": false,
+  "cases": [
+    {
+      "input": ["mass","as","hero","superhero"],
+      "output": ["as","hero"]
+    },
+    {
+      "input": ["leetcode","et","code"],
+      "output": ["et","code"]
+    },
+    {
+      "input": ["blue","green","bu"],
+      "output": []
+    }
+  ]
+}

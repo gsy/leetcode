@@ -36,16 +36,19 @@ class Solution(object):
 
         left, right = 0, length - 1
 
+        if target <= nums[left]:
+            return left
+
         while left < right:
             middle = (left + right) / 2
-            if nums[middle] == target:
+            actual = nums[middle]
+            if actual == target:
                 return middle
-            elif nums[middle] < target:
+            elif actual < target:
                 left = middle + 1
             else:
                 right = middle - 1
 
         if target <= nums[left]:
             return left
-        else:
-            return left + 1
+        return left + 1

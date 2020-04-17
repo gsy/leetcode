@@ -1,0 +1,14 @@
+{
+  "module": "numSteps",
+  "entry": "numSteps",
+  "cases": [
+    {
+      "input": [4, 3, 10, 9, 8],
+      "output": [10, 9]
+    },
+    {
+      "input": [4, 4, 7, 6, 7],
+      "output": [7, 7, 6]
+    }
+  ]
+}

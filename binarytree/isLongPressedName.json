@@ -1,0 +1,30 @@
+{
+  "module": "isLongPressedName",
+  "expand": true,
+  "cases": [
+    {
+      "input": ["alex", "aaleex"],
+      "output": true
+    },
+    {
+      "input": ["saeed", "ssaaedd"],
+      "output": false
+    },
+    {
+      "input": ["leelee", "lleeelee"],
+      "output": true
+    },
+    {
+      "input": ["laiden", "laiden"],
+      "output": true
+    },
+    {
+      "input": ["kikcxmvzi", "kiikcxxmmvvzz"],
+      "output": false
+    },
+    {
+      "input": ["vtkgn", "vttkgnn"],
+      "output": true
+    }
+  ]
+}

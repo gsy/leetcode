@@ -1,0 +1,18 @@
+{
+  "module": "detectCapitalUse",
+  "expand": true,
+  "cases": [
+    {
+      "input": "USA",
+      "output": true
+    },
+    {
+      "input": "FlaG",
+      "output": false
+    },
+    {
+      "input": "Leetcode",
+      "output": true
+    }
+  ]
+}

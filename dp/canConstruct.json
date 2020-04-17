@@ -1,0 +1,38 @@
+{
+  "module": "canConstruct",
+  "entry": "canConstruct",
+  "cases": [
+    {
+      "input": ["annabelle", 2],
+      "output": true
+    },
+    {
+      "input": ["leetcode", 3],
+      "output": false
+    },
+    {
+      "input": ["true", 4],
+      "output": true
+    },
+    {
+      "input": ["yzyzyzyzyzyzyzy", 2],
+      "output": true
+    },
+    {
+      "input": ["cr", 7],
+      "output": false
+    },
+    {
+      "input": ["aaa", 2],
+      "output": true
+    },
+    {
+      "input": ["qlkzenwmmnpkopu", 15],
+      "output": true
+    },
+    {
+      "input": ["ibzkwaxxaggkiwjbeysz", 15],
+      "output": true
+    }
+  ]
+}

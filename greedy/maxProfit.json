@@ -1,0 +1,26 @@
+{
+  "module": "maxProfit",
+  "expand": false,
+  "cases": [
+    {
+      "input": [7, 1, 5, 3, 6, 4],
+      "output": 7
+    },
+    {
+      "input": [1, 2, 3, 4, 5],
+      "output": 4
+    },
+    {
+      "input": [7, 6, 4, 3, 1],
+      "output": 0
+    },
+    {
+      "input": [2, 2, 5],
+      "output": 3
+    },
+    {
+      "input": [2, 1, 2, 0, 1],
+      "output": 2
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "module": "subsetsWithDup",
+  "expand": false,
+  "cases": [
+    {
+      "input": [1, 2, 2],
+      "output": [
+        [2],
+        [1],
+        [1,2,2],
+        [2,2],
+        [1,2],
+        []
+      ]
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "module": "countCharacters",
+  "expand": true,
+  "cases": [
+    {
+      "input": [["cat","bt","hat","tree"], "atach"],
+      "output": 6
+    }
+  ]
+}

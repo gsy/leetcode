@@ -1,0 +1,30 @@
+{
+  "module": "minDistance",
+  "entry": "minDistance",
+  "cases": [
+    {
+      "input": ["horse", "ros"],
+      "output": 3
+    },
+    {
+      "input": ["intention", "execution"],
+      "output": 5
+    },
+    {
+      "input": ["", ""],
+      "output": 0
+    },
+    {
+      "input": ["", "a"],
+      "output": 1
+    },
+    {
+      "input": ["abc", ""],
+      "output": 3
+    },
+    {
+      "input": ["ab", "bc"],
+      "output": 2
+    }
+  ]
+}

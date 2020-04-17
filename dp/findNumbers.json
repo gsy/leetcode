@@ -1,0 +1,10 @@
+{
+  "module": "findNumbers",
+  "entry": "findNumbers",
+  "cases": [
+    {
+      "input": [555,901,482,1771],
+      "output": 1
+    }
+  ]
+}

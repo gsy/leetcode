@@ -1,0 +1,14 @@
+{
+  "module": "permuteUnique",
+  "expand": false,
+  "cases": [
+    {
+      "input": [1, 1, 2],
+      "output": [
+        [1,1,2],
+        [1,2,1],
+        [2,1,1]
+      ]
+    }
+  ]
+}

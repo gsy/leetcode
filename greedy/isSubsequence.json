@@ -1,0 +1,18 @@
+{
+  "module": "isSubsequence",
+  "expand": true,
+  "cases": [
+    {
+      "input": ["abc", "ahbgdc"],
+      "output": true
+    },
+    {
+      "input": ["axc", "ahbgdc"],
+      "output": false
+    },
+    {
+      "input": ["acb", "ahbgdc"],
+      "output": false
+    }
+  ]
+}

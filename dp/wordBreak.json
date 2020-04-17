@@ -1,0 +1,10 @@
+{
+  "module": "wordBreak",
+  "expand": true,
+  "cases": [
+    {
+      "input": ["catsanddog", ["cat", "cats", "and", "sand", "dog"]],
+      "output": ["cats and dog", "cat sand dog"]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "module": "balancedStringSplit",
+  "expand": true,
+  "cases": [
+    {
+      "input": "RLRRLLRLRL",
+      "output": 4
+    },
+    {
+      "input": "RLLLLRRRLR",
+      "output": 3
+    },
+    {
+      "input": "LLLLRRRR",
+      "output": 1
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "module": "partition",
+  "expand": false,
+  "cases": [
+    {
+      "input": "aab",
+      "output": [
+        ["aa","b"],
+        ["a","a","b"]
+      ]
+    }
+  ]
+}

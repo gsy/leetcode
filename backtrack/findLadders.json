@@ -1,0 +1,13 @@
+{
+  "module": "findLadders",
+  "expand": true,
+  "cases": [
+    {
+      "input": ["hit", "cog", ["hot","dot","dog","lot","log","cog"]],
+      "output": [
+        ["hit","hot","dot","dog","cog"],
+        ["hit","hot","lot","log","cog"]
+      ]
+    }
+  ]
+}

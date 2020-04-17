@@ -1,0 +1,10 @@
+{
+  "module": "totalNQueens",
+  "expand": false,
+  "cases": [
+    {
+      "input": 4,
+      "output": 2
+    }
+  ]
+}

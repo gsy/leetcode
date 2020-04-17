@@ -1,0 +1,10 @@
+{
+  "module": "solveNQueens",
+  "expand": false,
+  "cases": [
+    {
+      "input": 4,
+      "output": []
+    }
+  ]
+}

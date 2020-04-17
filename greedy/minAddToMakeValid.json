@@ -1,0 +1,22 @@
+{
+  "module": "minAddToMakeValid",
+  "expand": true,
+  "cases": [
+    {
+      "input": "())",
+      "output": 1
+    },
+    {
+      "input": "(((",
+      "output": 3
+    },
+    {
+      "input": "()",
+      "output": 0
+    },
+    {
+      "input": "()))((",
+      "output": 4
+    }
+  ]
+}

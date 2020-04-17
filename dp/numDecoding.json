@@ -1,0 +1,14 @@
+{
+  "module": "numDecoding",
+  "entry": "numDecodings",
+  "cases": [
+    {
+      "input": "12",
+      "output": 2
+    },
+    {
+      "input": "226",
+      "output": 3
+    }
+  ]
+}

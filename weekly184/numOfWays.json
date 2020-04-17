@@ -1,0 +1,30 @@
+{
+  "module": "numOfWays",
+  "expand": true,
+  "cases": [
+    {
+      "input": 1,
+      "output": 12
+    },
+    {
+      "input": 2,
+      "output": 54
+    },
+    {
+      "input": 3,
+      "output": 246
+    },
+    {
+      "input": 7,
+      "output": 106494
+    },
+    {
+      "input": 8,
+      "output": 485778
+    },
+    {
+      "input": 5000,
+      "output": 30228214
+    }
+  ]
+}
