@@ -33,9 +33,3 @@ class Solution(object):
         romanNumeral['tens'][tens] + romanNumeral['ones'][ones]
 
         return result.lstrip()
-
-
-
-
-
-

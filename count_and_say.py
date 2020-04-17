@@ -45,4 +45,3 @@ class Solution(object):
             number = self.next(number)
 
         return number
-

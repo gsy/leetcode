@@ -1,9 +1,6 @@
 __author__ = 'guang'
 
 class Solution(object):
-    __author__ = 'guang'
-
-class Solution(object):
     def containsNearbyDuplicate(self, nums, k):
         """
         :type nums: List[int]

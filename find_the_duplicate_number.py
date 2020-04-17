@@ -37,5 +37,3 @@ class Solution(object):
                 return finder
 
         return 0
-
-

@@ -27,11 +27,3 @@ class Solution(object):
                 result = profit
 
         return result
-
-
-
-
-
-
-
-
