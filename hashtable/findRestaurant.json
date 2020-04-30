@@ -1,0 +1,18 @@
+{
+  "module": "findRestaurant",
+  "expand": true,
+  "cases": [
+    {
+      "input": [["Shogun", "Tapioca Express", "Burger King", "KFC"], ["Piatti", "The Grill at Torrey Pines", "Hungry Hunter Steakhouse", "Shogun"]],
+      "output": ["Shogun"]
+    },
+    {
+      "input": [["Shogun", "Tapioca Express", "Burger King", "KFC"], ["KFC", "Shogun", "Burger King"]],
+      "output": ["Shogun"]
+    },
+    {
+      "input": [["foo", "bar", "bamboo", "four"], ["bar", "foo", "oh"]],
+      "output": ["bar", "foo"]
+    }
+  ]
+}

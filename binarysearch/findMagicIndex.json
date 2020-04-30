@@ -1,0 +1,22 @@
+{
+  "module": "findMagicIndex",
+  "expand": false,
+  "cases": [
+    {
+      "input": [0, 2, 3, 4, 5],
+      "output": 0
+    },
+    {
+      "input": [1, 1, 1],
+      "output": 1
+    },
+    {
+      "input": [1, 1, 1, 1],
+      "output": 1
+    },
+    {
+      "input": [1, 1, 1, 1, 1],
+      "output": 1
+    }
+  ]
+}

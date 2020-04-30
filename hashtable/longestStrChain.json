@@ -1,0 +1,14 @@
+{
+  "module": "longestStrChain",
+  "expand": false,
+  "cases": [
+    {
+      "input": ["a","b","ba","bca","bda","bdca"],
+      "output": 4
+    },
+    {
+      "input": ["ksqvsyq","ks","kss","czvh","zczpzvdhx","zczpzvh","zczpzvhx","zcpzvh","zczvh","gr","grukmj","ksqvsq","gruj","kssq","ksqsq","grukkmj","grukj","zczpzfvdhx","gru"],
+      "output": 7
+    }
+  ]
+}

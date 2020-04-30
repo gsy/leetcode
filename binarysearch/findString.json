@@ -1,0 +1,38 @@
+{
+  "module": "findString",
+  "expand": "true",
+  "cases": [
+    {
+      "input": [["at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""], "sa"],
+      "output": -1
+    },
+    {
+      "input": [["at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""], "ball"],
+      "output": 4
+    },
+    {
+      "input": [["at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""], "at"],
+      "output": 0
+    },
+    {
+      "input": [["at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""], "car"],
+      "output": 7
+    },
+    {
+      "input": [["at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""], "dad"],
+      "output": 10
+    },
+    {
+      "input": [["at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""], "dada"],
+      "output": -1
+    },
+    {
+      "input": [["CitZMIXZKoFbxvOlaza", "hBlKXdKJfBD"], "hBlKXdKJfBD"],
+      "output": 1
+    },
+    {
+      "input": [["AX zEfzhxdXXbeCQOKa", "aLRAEYPIZokU", "giqyZpvcOHdfPpRqHAD", "mhQf", "uwIPRHFftk"], "btRVwblGdpLTtSLbjFzB"],
+      "output": -1
+    }
+  ]
+}

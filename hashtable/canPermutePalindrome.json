@@ -1,0 +1,22 @@
+{
+  "module": "canPermutePalindrome",
+  "expand": true,
+  "cases": [
+    {
+      "input": "tactcoa",
+      "output": true
+    },
+    {
+      "input": "aab",
+      "output": true
+    },
+    {
+      "input": "aabc",
+      "output": false
+    },
+    {
+      "input": "aabcb",
+      "output": true
+    }
+  ]
+}
