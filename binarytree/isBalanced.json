@@ -1,0 +1,18 @@
+{
+  "module": "isBalanced",
+  "expand": true,
+  "cases": [
+    {
+      "tree": [3, 9, 20, null, null, 15, 7],
+      "output": true
+    },
+    {
+      "tree": [1, 2, 2, 3, 3, null, null, 4, 4],
+      "output": false
+    },
+    {
+      "tree": [1, 2, 2, 3, null, null, 3, 4, null, null, null, null, null, null, 4],
+      "output": false
+    }
+  ]
+}

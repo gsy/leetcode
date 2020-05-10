@@ -5,6 +5,65 @@ import json
 import importlib
 
 
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+        self.hegiht = 0
+
+def arr2Tree(arr):
+    length = len(arr)
+    nodes = []
+    for i in range(length):
+        val = arr[i]
+        if val is not None:
+            node = TreeNode(val)
+        else:
+            node = None
+        nodes.append(node)
+
+        if i > 0:
+            parent = nodes[(i-1) // 2]
+            if i % 2 == 1:
+                parent.left = node
+            else:
+                parent.right = node
+    return nodes[0]
+
+def printTree(root):
+    if root is None:
+        return ""
+
+    levels = []
+    relationships = []
+    nodes = [root]
+
+    while len(nodes) > 0:
+        values = []
+        next_level = []
+        relationship = []
+
+        for node in nodes:
+            if node:
+                next_level.append(node.left)
+                next_level.append(node.right)
+                values.append(node.value)
+                if node.left:
+                    relationship.append("/")
+                else:
+                    relationship.append(" ")
+                if node.right:
+                    relationship.append("\\")
+                else:
+                    relationship.append(" ")
+        nodes = next_level
+        levels.append(values)
+
+
+        
+
+
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -27,18 +86,11 @@ def main(testsuit):
         total = len(answer["cases"])
         for case in answer["cases"]:
             count = count + 1
-            input = case["input"]
+            input = case["tree"]
             output = case["output"]
 
-            if answer["expand"]:
-                if isinstance(input, list):
-                    actual = entry_func(*input)
-                elif isinstance(input, dict):
-                    actual = entry_func(**input)
-                else:
-                    actual = entry_func(input)
-            else:
-                actual = entry_func(input)
+            root = arr2Tree(input[0])
+            actual = entry_func(root, input[1])
 
             if actual != output:
                 print(f"{bcolors.FAIL}[failed {count}/{total}] input: {input}, expect: {output}, got: {actual}{bcolors.ENDC}")
