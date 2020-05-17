@@ -1,0 +1,14 @@
+{
+  "module": "isPalindrome",
+  "expand": false,
+  "cases": [
+    {
+      "input": [1, 2],
+      "output": false
+    },
+    {
+      "input": [1, 2, 2, 1],
+      "output": true
+    }
+  ]
+}

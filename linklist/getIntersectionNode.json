@@ -1,0 +1,15 @@
+{
+  "module": "getIntersectionNode",
+  "expand": true,
+  "convertResult": true,
+  "cases": [
+    {
+      "input": [[4, 1, 8, 4, 5], [5, 0, 1, 8, 4, 5]],
+      "output": [1, 8, 4, 5]
+    },
+    {
+      "input": [[0, 9, 1, 2, 4], [3, 2, 4]],
+      "output": [2, 4]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "module": "getKthFromEnd",
+  "expand": true,
+  "convertResult": true,
+  "cases": [
+    {
+      "input": [[1, 2, 3, 4, 5], 2],
+      "output": [4, 5]
+    }
+  ]
+}

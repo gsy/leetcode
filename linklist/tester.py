@@ -61,7 +61,7 @@ def main(testsuit):
             if answer["expand"]:
                 if isinstance(input, list):
                     args = []
-                    for item in input:
+                    for i, item in enumerate(input):
                         if isinstance(item, list):
                             args.append(list2LinkList(item))
                         else:
