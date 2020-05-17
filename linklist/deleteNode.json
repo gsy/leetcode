@@ -1,0 +1,10 @@
+{
+  "module": "deleteNode",
+  "expand": false,
+  "cases": [
+    {
+      "input": [4, 5, 1, 9],
+      "output": [4, 1, 9]
+    }
+  ]
+}

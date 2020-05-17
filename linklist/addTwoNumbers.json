@@ -1,0 +1,14 @@
+{
+  "module": "addTwoNumbers",
+  "expand": true,
+  "cases": [
+    {
+      "input": [[7, 1, 6], [5, 9, 2]],
+      "output": [2, 1, 9]
+    },
+    {
+      "input": [[6, 1, 7], [2, 9, 5]],
+      "output": [8, 0, 3, 1]
+    }
+  ]
+}

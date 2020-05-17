@@ -1,0 +1,15 @@
+{
+  "module": "kthToLast",
+  "expand": true,
+  "cases": [
+    {
+      "input": [[1, 2, 3, 4, 5], 2],
+      "output": 4
+    },
+
+    {
+      "input": [[1, 2, 3, 4, 5], 5],
+      "output": 1
+    }
+  ]
+}
