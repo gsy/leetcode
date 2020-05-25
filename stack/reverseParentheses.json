@@ -1,0 +1,23 @@
+{
+  "module": "reverseParentheses",
+  "expand": false,
+  "cases": [
+    {
+      "input": "(abcd)",
+      "output": "dcba"
+    },
+    {
+      "input":"(u(love)i)",
+      "output": "iloveu"
+    },
+    {
+      "input": "(ed(et(oc))el)",
+      "output": "leetcode"
+    }
+    ,
+    {
+      "input": "a(bcdefghijkl(mno)p)q",
+      "output": "apmnolkjihgfedcbq"
+    }
+  ]
+}

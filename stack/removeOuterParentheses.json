@@ -1,0 +1,23 @@
+{
+  "module": "removeOuterParentheses",
+  "expand": false,
+  "cases": [
+    {
+      "input": "(()())(())",
+      "output": "()()()"
+    },
+    {
+      "input": "()()",
+      "output": ""
+    },
+    {
+      "input": "(()())(())(()(()))",
+      "output": "()()()()(())"
+    }
+    ,
+    {
+      "input": "()()",
+      "output": ""
+    }
+  ]
+}

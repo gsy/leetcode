@@ -1,0 +1,23 @@
+{
+  "module": "buildArray",
+  "expand": true,
+  "cases": [
+    {
+      "input": [[1, 3], 3],
+      "output": ["Push","Push","Pop","Push"]
+    },
+    {
+      "input": [[1, 2, 3], 3],
+      "output": ["Push","Push","Push"]
+    },
+
+    {
+      "input": [[1, 2], 4],
+      "output": ["Push","Push"]
+    },
+    {
+      "input": [[2, 3, 4], 4],
+      "output": ["Push","Pop","Push","Push","Push"]
+    }
+  ]
+}
